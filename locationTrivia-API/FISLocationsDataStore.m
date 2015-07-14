@@ -7,6 +7,8 @@
 //
 
 #import "FISLocationsDataStore.h"
+#import "FISLocationTriviaAPIClient.h"
+#import "FISLocation.h"
 
 @implementation FISLocationsDataStore
 
@@ -30,4 +32,41 @@
     }
     return self;
 }
+
+- (void)getLocationWithCompletion:(void (^)(BOOL))completionBlock
+{
+    [FISLocationTriviaAPIClient getLocationWithCompletion:^(NSArray *locationDictionary) {
+        [self.locations removeAllObjects];
+        for (NSDictionary *location in locationDictionary) {
+            [self.locations addObject:[FISLocation locationFromDictionary:location]];
+        }
+        completionBlock(YES);
+    }];
+}
+
+- (void)createLocationWithName:(NSString *)name
+                      latitude:(NSNumber *)latitude
+                     longitude:(NSNumber *)longitude
+               completionBlock:(void (^)(BOOL))completionBlock
+{
+    [FISLocationTriviaAPIClient createLocationWithName:name
+                                              latitude:latitude
+                                             longitude:longitude
+                                       completionBlock:^(BOOL success) {
+                                           if (success) {
+                                               completionBlock(YES);
+                                           }
+                                       }];
+}
+
+- (void)deleteWithID:(NSNumber *)ID completionBlock:(void (^)(BOOL))completionBlock
+{
+    [FISLocationTriviaAPIClient deleteLocationWithID:ID
+                                     completionBlock:^(BOOL success) {
+                                         if (success) {
+                                             completionBlock(YES);
+                                         }
+                                     }];
+}
+
 @end

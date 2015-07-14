@@ -11,6 +11,14 @@
 @interface FISLocationsDataStore : NSObject
 
 @property (strong, nonatomic) NSMutableArray *locations;
+
 + (instancetype)sharedLocationsDataStore;
 - (instancetype)init;
+- (void)getLocationWithCompletion:(void (^)(BOOL success))completionBlock;
+- (void)createLocationWithName:(NSString *)name
+                      latitude:(NSNumber *)latitude
+                     longitude:(NSNumber *)longitude
+               completionBlock:(void (^)(BOOL success))completionBlock;
+- (void)deleteWithID:(NSNumber *)ID completionBlock:(void (^)(BOOL success))completionBlock;
+
 @end

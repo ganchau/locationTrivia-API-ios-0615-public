@@ -67,7 +67,19 @@
 
 -(NSString *)numberOfTriva
 {
-    return [NSString stringWithFormat:@"%d", [self.trivia count]];
+    return [NSString stringWithFormat:@"%lu", [self.trivia count]];
+}
+
++ (FISLocation *)locationFromDictionary:(NSDictionary *)locationDictionary
+{
+    FISLocation *location = [[FISLocation alloc] init];
+    location.name = locationDictionary[@"name"];
+    location.latitude = locationDictionary[@"latitude"];
+    location.longitude = locationDictionary[@"longitude"];
+    location.trivia = locationDictionary[@"trivia"];
+    location.ID = locationDictionary[@"id"];
+    
+    return location;
 }
 
 @end
